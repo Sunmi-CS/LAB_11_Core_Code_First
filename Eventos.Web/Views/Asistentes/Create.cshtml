@@ -1,41 +1,71 @@
 @model Eventos.Web.Models.Asistente
 
 @{
-    ViewData["Title"] = "Registrar asistente";
+    ViewData["Title"] = "Registrar Asistente";
 }
 
-<h1>Registrar asistente</h1>
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+        <div class="mb-3">
+            <a asp-action="Index" class="text-decoration-none text-muted small d-inline-flex align-items-center gap-1 mb-2">
+                <i class="bi bi-arrow-left"></i> Volver al directorio de asistentes
+            </a>
+            <h2 class="fw-bold mb-1">Registrar Nuevo Asistente</h2>
+            <p class="text-muted small">Ingresa la información personal del participante para su registro en el sistema.</p>
+        </div>
 
-<form asp-action="Create" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="card border-0 shadow-sm p-4 p-md-5 bg-white">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger border-0 shadow-sm py-2 px-3 small"></div>
 
-    <div class="mb-3">
-        <label asp-for="Nombres" class="form-label"></label>
-        <input asp-for="Nombres" class="form-control" />
-        <span asp-validation-for="Nombres" class="text-danger"></span>
+                <div class="mb-3">
+                    <label asp-for="Nombres" class="form-label fw-semibold">
+                        <i class="bi bi-person text-primary me-1"></i>Nombres y Apellidos
+                    </label>
+                    <input asp-for="Nombres" class="form-control" placeholder="Ej: Juan Carlos Pérez Gómez" />
+                    <span asp-validation-for="Nombres" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Dni" class="form-label fw-semibold">
+                            <i class="bi bi-card-text text-primary me-1"></i>Documento (DNI)
+                        </label>
+                        <input asp-for="Dni" class="form-control" maxlength="8" placeholder="8 dígitos numéricos" />
+                        <span asp-validation-for="Dni" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Telefono" class="form-label fw-semibold">
+                            <i class="bi bi-telephone text-primary me-1"></i>Teléfono de Contacto
+                        </label>
+                        <input asp-for="Telefono" class="form-control" maxlength="9" placeholder="Ej: 987654321" />
+                        <span asp-validation-for="Telefono" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Correo" class="form-label fw-semibold">
+                        <i class="bi bi-envelope text-primary me-1"></i>Correo Electrónico
+                    </label>
+                    <input asp-for="Correo" type="email" class="form-control" placeholder="nombre@correo.com" />
+                    <span asp-validation-for="Correo" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center gap-2 pt-3 border-top">
+                    <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2 px-4 shadow-sm">
+                        <i class="bi bi-person-check-fill"></i>
+                        <span>Guardar Asistente</span>
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 px-4">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Cancelar</span>
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Dni" class="form-label"></label>
-        <input asp-for="Dni" class="form-control" maxlength="8" />
-        <span asp-validation-for="Dni" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Correo" class="form-label"></label>
-        <input asp-for="Correo" type="email" class="form-control" />
-        <span asp-validation-for="Correo" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Telefono" class="form-label"></label>
-        <input asp-for="Telefono" class="form-control" maxlength="9" />
-        <span asp-validation-for="Telefono" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Guardar</button>
-    <a asp-action="Index" class="btn btn-secondary">Volver</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

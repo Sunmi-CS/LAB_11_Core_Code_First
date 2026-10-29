@@ -1,79 +1,89 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Eventos.Web</title>
     <script type="importmap"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Eventos.Web.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="bg-light d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Eventos.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom sticky-top shadow-sm py-2">
+            <div class="container">
+                <a class="navbar-brand fw-bold d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-3 p-2 me-2 shadow-sm" style="width: 38px; height: 38px;">
+                        <i class="bi bi-calendar-event fs-5"></i>
+                    </span>
+                    <span>Eventos<span class="text-primary">.Web</span></span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-
-
-
-<ul class="navbar-nav flex-grow-1">
-    <li class="nav-item">
-        <a class="nav-link text-dark"
-           asp-area=""
-           asp-controller="Home"
-           asp-action="Index">Inicio</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link text-dark"
-           asp-controller="Eventos"
-           asp-action="Index">Eventos</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link text-dark"
-           asp-controller="Asistentes"
-           asp-action="Index">Asistentes</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link text-dark"
-           asp-controller="Inscripciones"
-           asp-action="Index">Inscripciones</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link text-dark"
-           asp-area=""
-           asp-controller="Home"
-           asp-action="Privacy">Privacidad</a>
-    </li>
-</ul>
-
-
-
-
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                        <li class="nav-item">
+                            <a class="nav-link px-3 d-flex align-items-center gap-2" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door"></i> Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 d-flex align-items-center gap-2" asp-controller="Eventos" asp-action="Index">
+                                <i class="bi bi-calendar2-range"></i> Eventos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 d-flex align-items-center gap-2" asp-controller="Asistentes" asp-action="Index">
+                                <i class="bi bi-people"></i> Asistentes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 d-flex align-items-center gap-2" asp-controller="Inscripciones" asp-action="Index">
+                                <i class="bi bi-card-checklist"></i> Inscripciones
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link px-3 d-flex align-items-center gap-2 text-white-50" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="bi bi-shield-check"></i> Privacidad
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div class="container py-4 flex-grow-1">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="bg-white border-top py-4 mt-auto">
         <div class="container">
-            &copy; 2026 - Eventos.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 text-muted small">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar2-check text-primary"></i>
+                    <span>&copy; 2026 <strong>Eventos.Web</strong> &mdash; Gestión Integral de Eventos Empresariales</span>
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none text-muted me-3">Política de Privacidad</a>
+                    <span class="text-black-50">&bull;</span>
+                    <span class="ms-3 text-secondary">LAB 11 - DAE</span>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

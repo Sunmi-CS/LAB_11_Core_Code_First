@@ -4,39 +4,98 @@
     ViewData["Title"] = "Asistentes";
 }
 
-<h1>Asistentes</h1>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1 d-flex align-items-center gap-2">
+            <i class="bi bi-people-fill text-primary"></i> Directorio de Asistentes
+        </h2>
+        <p class="text-muted small mb-0">Base de datos de participantes registrados para eventos y conferencias.</p>
+    </div>
+    <div>
+        <a asp-action="Create" class="btn btn-primary d-inline-flex align-items-center gap-2 shadow-sm">
+            <i class="bi bi-person-plus-fill"></i>
+            <span>Registrar asistente</span>
+        </a>
+    </div>
+</div>
 
 @if (TempData["Mensaje"] != null)
 {
-    <div class="alert alert-success">
-        @TempData["Mensaje"]
+    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 border-0 shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill fs-5"></i>
+        <div>@TempData["Mensaje"]</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">
-        Registrar asistente
-    </a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nombres</th>
-            <th>DNI</th>
-            <th>Correo</th>
-            <th>Teléfono</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var asistente in Model)
-    {
-        <tr>
-            <td>@asistente.Nombres</td>
-            <td>@asistente.Dni</td>
-            <td>@asistente.Correo</td>
-            <td>@(asistente.Telefono ?? "No registrado")</td>
-        </tr>
-    }
-    </tbody>
-</table>
+<div class="table-custom-container">
+    <div class="table-responsive">
+        <table class="table table-custom align-middle">
+            <thead>
+                <tr>
+                    <th>Participante</th>
+                    <th>Documento (DNI)</th>
+                    <th>Correo Electrónico</th>
+                    <th>Teléfono</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var asistente in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 40px; height: 40px; font-size: 1rem;">
+                                    <i class="bi bi-person-fill"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark">@asistente.Nombres</div>
+                                    <small class="text-muted">ID: #@asistente.Id</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-soft-secondary font-monospace px-3 py-1 fs-6">
+                                <i class="bi bi-card-text me-1 text-muted"></i>@asistente.Dni
+                            </span>
+                        </td>
+                        <td>
+                            <a href="mailto:@asistente.Correo" class="text-decoration-none text-primary d-inline-flex align-items-center gap-1">
+                                <i class="bi bi-envelope"></i>
+                                <span>@asistente.Correo</span>
+                            </a>
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(asistente.Telefono))
+                            {
+                                <span class="text-secondary d-inline-flex align-items-center gap-1">
+                                    <i class="bi bi-telephone text-success"></i>
+                                    <span>@asistente.Telefono</span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted fst-italic small">No registrado</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center py-5 text-muted">
+                        <i class="bi bi-people fs-1 d-block mb-2 text-secondary"></i>
+                        <p class="mb-2 fw-semibold">No hay asistentes registrados actualmente.</p>
+                        <a asp-action="Create" class="btn btn-sm btn-primary">
+                            <i class="bi bi-plus-lg me-1"></i>Registrar primer asistente
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

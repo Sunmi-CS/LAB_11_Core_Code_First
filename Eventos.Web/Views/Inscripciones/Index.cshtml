@@ -4,60 +4,132 @@
     ViewData["Title"] = "Inscripciones";
 }
 
-<h1>Inscripciones</h1>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1 d-flex align-items-center gap-2">
+            <i class="bi bi-card-checklist text-primary"></i> Control de Inscripciones
+        </h2>
+        <p class="text-muted small mb-0">Monitorea los registros de asistentes a eventos y gestiona cancelaciones.</p>
+    </div>
+    <div>
+        <a asp-action="Create" class="btn btn-primary d-inline-flex align-items-center gap-2 shadow-sm">
+            <i class="bi bi-ticket-perforated-fill"></i>
+            <span>Registrar inscripción</span>
+        </a>
+    </div>
+</div>
 
 @if (TempData["Mensaje"] != null)
 {
-    <div class="alert alert-success">
-        @TempData["Mensaje"]
+    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 border-0 shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill fs-5"></i>
+        <div>@TempData["Mensaje"]</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">
-        @TempData["Error"]
+    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 border-0 shadow-sm" role="alert">
+        <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+        <div>@TempData["Error"]</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">
-        Registrar inscripción
-    </a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Evento</th>
-            <th>Asistente</th>
-            <th>Fecha de inscripción</th>
-            <th>Estado</th>
-            <th>Acción</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var inscripcion in Model)
-    {
-        <tr>
-            <td>@inscripcion.Evento?.Titulo</td>
-            <td>@inscripcion.Asistente?.Nombres</td>
-            <td>@inscripcion.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")</td>
-            <td>@inscripcion.Estado</td>
-            <td>
-                @if (inscripcion.Estado == "Confirmada")
+<div class="table-custom-container">
+    <div class="table-responsive">
+        <table class="table table-custom align-middle">
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Asistente</th>
+                    <th>Fecha de Inscripción</th>
+                    <th class="text-center">Estado</th>
+                    <th class="text-center">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var inscripcion in Model)
                 {
-                    <form asp-action="Cancelar"
-                          asp-route-id="@inscripcion.Id"
-                          method="post">
-                        <button type="submit"
-                                class="btn btn-danger btn-sm">
-                            Cancelar
-                        </button>
-                    </form>
+                    <tr>
+                        <td>
+                            <div class="fw-bold text-dark d-flex align-items-center gap-2">
+                                <i class="bi bi-calendar-event text-primary"></i>
+                                <span>@(inscripcion.Evento?.Titulo ?? "Evento no especificado")</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-person-circle text-secondary"></i>
+                                <span class="fw-semibold text-secondary">@(inscripcion.Asistente?.Nombres ?? "Asistente no especificado")</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="text-muted">
+                                <i class="bi bi-clock-history me-1"></i>
+                                @inscripcion.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            @if (inscripcion.Estado == "Confirmada")
+                            {
+                                <span class="badge badge-soft-success px-3 py-1">
+                                    <i class="bi bi-check-circle-fill me-1"></i>Confirmada
+                                </span>
+                            }
+                            else if (inscripcion.Estado == "Cancelada")
+                            {
+                                <span class="badge badge-soft-danger px-3 py-1">
+                                    <i class="bi bi-x-circle-fill me-1"></i>Cancelada
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-secondary px-3 py-1">
+                                    @inscripcion.Estado
+                                </span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (inscripcion.Estado == "Confirmada")
+                            {
+                                <form asp-action="Cancelar"
+                                      asp-route-id="@inscripcion.Id"
+                                      method="post"
+                                      class="d-inline">
+                                    <button type="submit"
+                                            class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1"
+                                            title="Cancelar inscripción"
+                                            onclick="return confirm('¿Seguro que deseas cancelar esta inscripción?');">
+                                        <i class="bi bi-x-circle"></i>
+                                        <span>Cancelar</span>
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="text-muted small fst-italic">Sin acciones</span>
+                            }
+                        </td>
+                    </tr>
                 }
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center py-5 text-muted">
+                        <i class="bi bi-ticket-perforated fs-1 d-block mb-2 text-secondary"></i>
+                        <p class="mb-2 fw-semibold">No se registran inscripciones en el sistema.</p>
+                        <a asp-action="Create" class="btn btn-sm btn-primary">
+                            <i class="bi bi-plus-lg me-1"></i>Registrar primera inscripción
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

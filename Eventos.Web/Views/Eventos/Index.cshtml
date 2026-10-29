@@ -6,80 +6,175 @@
                     ?? new Dictionary<int, int>();
 }
 
-<h1>Eventos</h1>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1 d-flex align-items-center gap-2">
+            <i class="bi bi-calendar2-range text-primary"></i> Cartelera de Eventos
+        </h2>
+        <p class="text-muted small mb-0">Administra los eventos programados, cupos y categorías disponibles.</p>
+    </div>
+    <div>
+        <a asp-action="Create" class="btn btn-primary d-inline-flex align-items-center gap-2 shadow-sm">
+            <i class="bi bi-plus-circle-fill"></i>
+            <span>Registrar evento</span>
+        </a>
+    </div>
+</div>
 
 @if (TempData["Mensaje"] != null)
 {
-    <div class="alert alert-success">
-        @TempData["Mensaje"]
+    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 border-0 shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill fs-5"></i>
+        <div>@TempData["Mensaje"]</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">
-        Registrar evento
-    </a>
-</p>
+<div class="card border-0 mb-4 p-3 shadow-sm bg-white">
+    <form asp-action="Index" method="get" class="row g-2 align-items-center">
+        <div class="col-12 col-md-auto">
+            <label for="categoriaId" class="form-label mb-0 fw-semibold text-secondary d-flex align-items-center gap-1">
+                <i class="bi bi-funnel-fill text-primary"></i> Filtrar por categoría:
+            </label>
+        </div>
+        <div class="col-12 col-md-4 col-lg-3">
+            <select id="categoriaId" name="categoriaId"
+                    asp-items="ViewBag.Categorias"
+                    class="form-select form-select-sm">
+                <option value="">Todas las categorías</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-auto d-flex gap-2">
+            <button type="submit" class="btn btn-sm btn-secondary d-inline-flex align-items-center gap-1">
+                <i class="bi bi-search"></i> Filtrar
+            </button>
+            <a asp-action="Index" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1">
+                <i class="bi bi-arrow-counterclockwise"></i> Limpiar
+            </a>
+        </div>
+    </form>
+</div>
 
-<form asp-action="Index" method="get" class="mb-3">
-    <label for="categoriaId">Filtrar por categoría</label>
+<div class="table-custom-container">
+    <div class="table-responsive">
+        <table class="table table-custom align-middle">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Fecha y Hora</th>
+                    <th>Lugar</th>
+                    <th>Categoría</th>
+                    <th>Modalidad</th>
+                    <th>Precio</th>
+                    <th class="text-center">Inscritos</th>
+                    <th class="text-center">Cupos Disponibles</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var evento in Model)
+                {
+                    var cantidad = inscritos.GetValueOrDefault(evento.Id);
+                    var cupos = evento.Aforo - cantidad;
 
-    <select id="categoriaId" name="categoriaId"
-            asp-items="ViewBag.Categorias"
-            class="form-select">
-        <option value="">Todas las categorías</option>
-    </select>
-
-    <button type="submit" class="btn btn-secondary mt-2">
-        Filtrar
-    </button>
-
-    <a asp-action="Index" class="btn btn-outline-secondary mt-2">
-        Limpiar
-    </a>
-</form>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Título</th>
-            <th>Fecha</th>
-            <th>Lugar</th>
-            <th>Categoría</th>
-            <th>Modalidad</th>
-            <th>Precio</th>
-            <th>Inscritos</th>
-            <th>Cupos disponibles</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var evento in Model)
-    {
-        var cantidad = inscritos.GetValueOrDefault(evento.Id);
-        var cupos = evento.Aforo - cantidad;
-
-        <tr>
-            <td>@evento.Titulo</td>
-            <td>@evento.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
-            <td>@evento.Lugar</td>
-            <td>@evento.Categoria?.Nombre</td>
-            <td>@evento.Modalidad</td>
-            <td>@evento.Precio.ToString("C")</td>
-            <td>@cantidad</td>
-            <td>@cupos</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@evento.Id">
-                    Detalles
-                </a> |
-                <a asp-action="Edit" asp-route-id="@evento.Id">
-                    Editar
-                </a> |
-                <a asp-action="Delete" asp-route-id="@evento.Id">
-                    Desactivar
-                </a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+                    <tr>
+                        <td>
+                            <div class="fw-bold text-dark">@evento.Titulo</div>
+                            <small class="text-muted">Aforo total: @evento.Aforo personas</small>
+                        </td>
+                        <td>
+                            <div class="text-nowrap">
+                                <i class="bi bi-calendar3 text-muted me-1"></i>
+                                @evento.Fecha.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                        </td>
+                        <td>
+                            <span class="text-secondary">
+                                <i class="bi bi-geo-alt text-danger me-1"></i>@evento.Lugar
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge badge-soft-secondary px-2 py-1">
+                                @(evento.Categoria?.Nombre ?? "Sin categoría")
+                            </span>
+                        </td>
+                        <td>
+                            @if (evento.Modalidad == "Presencial")
+                            {
+                                <span class="badge badge-soft-primary px-2 py-1">
+                                    <i class="bi bi-building me-1"></i>Presencial
+                                </span>
+                            }
+                            else if (evento.Modalidad == "Virtual")
+                            {
+                                <span class="badge badge-soft-info px-2 py-1">
+                                    <i class="bi bi-camera-video me-1"></i>Virtual
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-secondary px-2 py-1">@evento.Modalidad</span>
+                            }
+                        </td>
+                        <td>
+                            <span class="fw-bold text-success">@evento.Precio.ToString("C")</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill bg-light text-dark border px-3 py-1 fw-bold">
+                                @cantidad
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            @if (cupos <= 0)
+                            {
+                                <span class="badge badge-soft-danger px-2 py-1">
+                                    <i class="bi bi-x-circle me-1"></i>Agotado (0)
+                                </span>
+                            }
+                            else if (cupos <= 5)
+                            {
+                                <span class="badge badge-soft-warning px-2 py-1">
+                                    <i class="bi bi-exclamation-triangle me-1"></i>@cupos libres
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-success px-2 py-1">
+                                    <i class="bi bi-check-circle me-1"></i>@cupos libres
+                                </span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group" aria-label="Acciones de evento">
+                                <a asp-action="Details" asp-route-id="@evento.Id" class="btn btn-sm btn-outline-info" title="Ver detalles">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@evento.Id" class="btn btn-sm btn-outline-primary" title="Editar evento">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@evento.Id" class="btn btn-sm btn-outline-danger" title="Desactivar evento">
+                                    <i class="bi bi-slash-circle"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" class="text-center py-5 text-muted">
+                        <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
+                        <p class="mb-2 fw-semibold">No se encontraron eventos registrados.</p>
+                        <a asp-action="Create" class="btn btn-sm btn-primary">
+                            <i class="bi bi-plus-lg me-1"></i>Crear nuevo evento
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

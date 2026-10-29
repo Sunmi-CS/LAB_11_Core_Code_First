@@ -1,8 +1,127 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Panel Principal";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-banner mb-5 position-relative overflow-hidden">
+    <div class="row align-items-center position-relative" style="z-index: 2;">
+        <div class="col-lg-8">
+            <span class="badge bg-primary bg-opacity-75 text-white px-3 py-2 rounded-pill mb-3">
+                <i class="bi bi-stars me-1"></i> Sistema de Gestión de Eventos v1.0
+            </span>
+            <h1 class="display-5 fw-bold text-white mb-3">
+                Organiza, Administra e Inscribe en tus Eventos Empresariales
+            </h1>
+            <p class="lead text-light text-opacity-75 mb-4">
+                Plataforma integral para la planificación de conferencias, control estricto de aforos en tiempo real, gestión de asistentes y registro de inscripciones.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+                <a asp-controller="Eventos" asp-action="Index" class="btn btn-primary btn-lg px-4 d-inline-flex align-items-center gap-2 shadow-sm">
+                    <i class="bi bi-calendar2-range"></i> Explorar Eventos
+                </a>
+                <a asp-controller="Inscripciones" asp-action="Create" class="btn btn-outline-light btn-lg px-4 d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-ticket-perforated"></i> Nueva Inscripción
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 d-none d-lg-block text-center">
+            <div class="p-4 bg-white bg-opacity-10 rounded-4 border border-white border-opacity-10 backdrop-blur">
+                <i class="bi bi-calendar-event text-info display-1"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card card-hover h-100 border-0 p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Eventos</h5>
+                    <small class="text-muted">Cartelera y Aforos</small>
+                </div>
+            </div>
+            <p class="text-secondary small mb-4 flex-grow-1">
+                Publica nuevos eventos, define aforos máximos, precios y categorías, y selecciona entre modalidad presencial o virtual.
+            </p>
+            <div class="d-flex gap-2">
+                <a asp-controller="Eventos" asp-action="Index" class="btn btn-light btn-sm w-100 text-primary fw-semibold">
+                    Ver Eventos <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+                <a asp-controller="Eventos" asp-action="Create" class="btn btn-primary btn-sm px-3" title="Registrar nuevo">
+                    <i class="bi bi-plus-lg"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-hover h-100 border-0 p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="stat-icon bg-success bg-opacity-10 text-success">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Asistentes</h5>
+                    <small class="text-muted">Directorio de Participantes</small>
+                </div>
+            </div>
+            <p class="text-secondary small mb-4 flex-grow-1">
+                Registra y consulta la información de los asistentes, incluyendo DNI, correo electrónico y teléfonos de contacto para convocatorias.
+            </p>
+            <div class="d-flex gap-2">
+                <a asp-controller="Asistentes" asp-action="Index" class="btn btn-light btn-sm w-100 text-success fw-semibold">
+                    Ver Asistentes <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+                <a asp-controller="Asistentes" asp-action="Create" class="btn btn-success btn-sm px-3" title="Registrar nuevo">
+                    <i class="bi bi-plus-lg"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-hover h-100 border-0 p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                    <i class="bi bi-ticket-perforated"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Inscripciones</h5>
+                    <small class="text-muted">Control de Cupos</small>
+                </div>
+            </div>
+            <p class="text-secondary small mb-4 flex-grow-1">
+                Vincula asistentes a sus eventos correspondientes con validación de disponibilidad y opción de gestión o cancelación de inscripciones.
+            </p>
+            <div class="d-flex gap-2">
+                <a asp-controller="Inscripciones" asp-action="Index" class="btn btn-light btn-sm w-100 text-warning-emphasis fw-semibold">
+                    Ver Inscripciones <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+                <a asp-controller="Inscripciones" asp-action="Create" class="btn btn-warning btn-sm px-3" title="Nueva inscripción">
+                    <i class="bi bi-plus-lg"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 p-4 bg-white">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h5 class="fw-bold mb-1">
+                <i class="bi bi-info-circle-fill text-primary me-2"></i>Reglas de Negocio del Sistema
+            </h5>
+            <p class="text-muted small mb-0">
+                Los aforos son calculados dinámicamente: cada inscripción confirmada descuenta un cupo disponible. Los eventos desactivados conservan su historial en la base de datos sin pérdida de información.
+            </p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <span class="badge badge-soft-info p-2 px-3">
+                <i class="bi bi-shield-lock-fill me-1"></i> Control de Capacidad Activo
+            </span>
+        </div>
+    </div>
 </div>

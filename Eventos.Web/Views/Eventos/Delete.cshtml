@@ -1,21 +1,49 @@
 @model Eventos.Web.Models.Evento
 
 @{
-    ViewData["Title"] = "Desactivar evento";
+    ViewData["Title"] = "Desactivar Evento";
 }
 
-<h1>Desactivar evento</h1>
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <div class="mb-3">
+            <a asp-action="Index" class="text-decoration-none text-muted small d-inline-flex align-items-center gap-1 mb-2">
+                <i class="bi bi-arrow-left"></i> Volver a la lista de eventos
+            </a>
+            <h2 class="fw-bold mb-1 text-danger d-flex align-items-center gap-2">
+                <i class="bi bi-exclamation-octagon-fill"></i> Desactivar Evento
+            </h2>
+            <p class="text-muted small">Esta acción marcará el evento como inactivo en el sistema.</p>
+        </div>
 
-<p>
-    ¿Deseas desactivar el evento <strong>@Model.Titulo</strong>?
-</p>
+        <div class="card border-0 shadow-sm p-4 bg-white">
+            <div class="alert alert-warning border-0 d-flex gap-3 align-items-start mb-4">
+                <i class="bi bi-exclamation-triangle-fill fs-4 text-warning flex-shrink-0"></i>
+                <div class="small">
+                    <strong>¿Estás seguro de que deseas desactivar este evento?</strong>
+                    <div class="mt-1">El evento dejará de mostrarse en la lista activa, pero su registro histórico se conservará en la base de datos.</div>
+                </div>
+            </div>
 
-<p>El registro se conservará en la base de datos.</p>
+            <div class="p-3 bg-light rounded-3 mb-4 border">
+                <div class="text-muted small mb-1">Evento a desactivar:</div>
+                <div class="fw-bold fs-5 text-dark">@Model.Titulo</div>
+                <div class="text-muted small mt-2 d-flex flex-wrap gap-3">
+                    <span><i class="bi bi-calendar3 me-1"></i>@Model.Fecha.ToString("dd/MM/yyyy HH:mm")</span>
+                    <span><i class="bi bi-geo-alt me-1"></i>@Model.Lugar</span>
+                </div>
+            </div>
 
-<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
-    <button type="submit" class="btn btn-danger">
-        Confirmar desactivación
-    </button>
-
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-flex flex-wrap gap-2">
+                <button type="submit" class="btn btn-danger d-inline-flex align-items-center gap-2 px-4 shadow-sm">
+                    <i class="bi bi-slash-circle"></i>
+                    <span>Confirmar Desactivación</span>
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 px-4">
+                    <i class="bi bi-x-circle"></i>
+                    <span>Cancelar</span>
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

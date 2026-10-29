@@ -1,41 +1,133 @@
 @model Eventos.Web.Models.Evento
 
 @{
-    ViewData["Title"] = "Detalles del evento";
+    ViewData["Title"] = "Detalles del Evento";
+    var cupos = Model.Aforo - (int)ViewBag.Inscritos;
 }
 
-<h1>Detalles del evento</h1>
+<div class="row justify-content-center">
+    <div class="col-lg-9 col-xl-8">
+        <div class="mb-3">
+            <a asp-action="Index" class="text-decoration-none text-muted small d-inline-flex align-items-center gap-1 mb-2">
+                <i class="bi bi-arrow-left"></i> Volver a la lista de eventos
+            </a>
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                <div>
+                    <h2 class="fw-bold mb-1">@Model.Titulo</h2>
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <span class="badge badge-soft-secondary px-3 py-1">
+                            <i class="bi bi-tag-fill me-1"></i>@(Model.Categoria?.Nombre ?? "Sin categoría")
+                        </span>
+                        @if (Model.Modalidad == "Presencial")
+                        {
+                            <span class="badge badge-soft-primary px-3 py-1">
+                                <i class="bi bi-building me-1"></i>Presencial
+                            </span>
+                        }
+                        else if (Model.Modalidad == "Virtual")
+                        {
+                            <span class="badge badge-soft-info px-3 py-1">
+                                <i class="bi bi-laptop me-1"></i>Virtual
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-soft-secondary px-3 py-1">@Model.Modalidad</span>
+                        }
+                    </div>
+                </div>
+                <div>
+                    <span class="fs-4 fw-bold text-success">@Model.Precio.ToString("C")</span>
+                </div>
+            </div>
+        </div>
 
-<dl class="row">
-    <dt class="col-sm-3">Título</dt>
-    <dd class="col-sm-9">@Model.Titulo</dd>
+        <!-- KPI Metric Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="stat-tile">
+                    <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Aforo Total</div>
+                        <div class="fs-4 fw-bold">@Model.Aforo</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-tile">
+                    <div class="stat-icon bg-info bg-opacity-10 text-info">
+                        <i class="bi bi-person-check-fill"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Inscritos Confirmados</div>
+                        <div class="fs-4 fw-bold">@ViewBag.Inscritos</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-tile">
+                    <div class="stat-icon @(cupos <= 0 ? "bg-danger bg-opacity-10 text-danger" : cupos <= 5 ? "bg-warning bg-opacity-10 text-warning" : "bg-success bg-opacity-10 text-success")">
+                        <i class="bi bi-ticket-detailed-fill"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Cupos Disponibles</div>
+                        <div class="fs-4 fw-bold @(cupos <= 0 ? "text-danger" : cupos <= 5 ? "text-warning" : "text-success")">
+                            @cupos
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <dt class="col-sm-3">Fecha</dt>
-    <dd class="col-sm-9">@Model.Fecha.ToString("dd/MM/yyyy HH:mm")</dd>
+        <!-- Event Information Card -->
+        <div class="card border-0 shadow-sm p-4 mb-4 bg-white">
+            <h5 class="fw-bold mb-3 border-bottom pb-2">
+                <i class="bi bi-info-circle text-primary me-2"></i>Información General
+            </h5>
 
-    <dt class="col-sm-3">Lugar</dt>
-    <dd class="col-sm-9">@Model.Lugar</dd>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded-3">
+                        <small class="text-muted d-block mb-1"><i class="bi bi-calendar3 text-primary me-1"></i>Fecha y Hora Programada</small>
+                        <span class="fw-semibold text-dark fs-6">@Model.Fecha.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded-3">
+                        <small class="text-muted d-block mb-1"><i class="bi bi-geo-alt text-danger me-1"></i>Lugar o Plataforma</small>
+                        <span class="fw-semibold text-dark fs-6">@Model.Lugar</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded-3">
+                        <small class="text-muted d-block mb-1"><i class="bi bi-diagram-3 text-secondary me-1"></i>Modalidad de Asistencia</small>
+                        <span class="fw-semibold text-dark fs-6">@Model.Modalidad</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded-3">
+                        <small class="text-muted d-block mb-1"><i class="bi bi-currency-dollar text-success me-1"></i>Costo por Asistente</small>
+                        <span class="fw-semibold text-success fs-6">@Model.Precio.ToString("C")</span>
+                    </div>
+                </div>
+            </div>
 
-    <dt class="col-sm-3">Categoría</dt>
-    <dd class="col-sm-9">@Model.Categoria?.Nombre</dd>
-
-    <dt class="col-sm-3">Modalidad</dt>
-    <dd class="col-sm-9">@Model.Modalidad</dd>
-
-    <dt class="col-sm-3">Aforo</dt>
-    <dd class="col-sm-9">@Model.Aforo</dd>
-
-    <dt class="col-sm-3">Precio</dt>
-    <dd class="col-sm-9">@Model.Precio.ToString("C")</dd>
-
-    <dt class="col-sm-3">Inscritos confirmados</dt>
-    <dd class="col-sm-9">@ViewBag.Inscritos</dd>
-
-    <dt class="col-sm-3">Cupos disponibles</dt>
-    <dd class="col-sm-9">@(Model.Aforo - (int)ViewBag.Inscritos)</dd>
-</dl>
-
-<a asp-action="Edit" asp-route-id="@Model.Id"
-   class="btn btn-primary">Editar</a>
-
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+            <div class="d-flex flex-wrap align-items-center gap-2 mt-4 pt-3 border-top">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-inline-flex align-items-center gap-2 px-4 shadow-sm">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Editar Evento</span>
+                </a>
+                <a asp-controller="Inscripciones" asp-action="Create" class="btn btn-outline-success d-inline-flex align-items-center gap-2 px-4">
+                    <i class="bi bi-person-plus-fill"></i>
+                    <span>Inscribir Asistente</span>
+                </a>
+                <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 px-4 ms-auto">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Volver</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
