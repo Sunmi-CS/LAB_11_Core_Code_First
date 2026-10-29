@@ -1,0 +1,46 @@
+@model Eventos.Web.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Registrar inscripción";
+}
+
+<h1>Registrar inscripción</h1>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="EventoId" class="form-label">Evento</label>
+        <select asp-for="EventoId"
+                asp-items="@(new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+                    (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.EventoId,
+                    "Value",
+                    "Text",
+                    ViewBag.EventoSeleccionado))"
+                class="form-select">
+            <option value="">Selecciona un evento</option>
+        </select>
+        <span asp-validation-for="EventoId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AsistenteId" class="form-label">Asistente</label>
+        <select asp-for="AsistenteId"
+                asp-items="@(new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+                    (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.AsistenteId,
+                    "Value",
+                    "Text",
+                    ViewBag.AsistenteSeleccionado))"
+                class="form-select">
+            <option value="">Selecciona un asistente</option>
+        </select>
+        <span asp-validation-for="AsistenteId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Inscribir</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

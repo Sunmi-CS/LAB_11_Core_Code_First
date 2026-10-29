@@ -1,0 +1,41 @@
+@model Eventos.Web.Models.Evento
+
+@{
+    ViewData["Title"] = "Detalles del evento";
+}
+
+<h1>Detalles del evento</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Título</dt>
+    <dd class="col-sm-9">@Model.Titulo</dd>
+
+    <dt class="col-sm-3">Fecha</dt>
+    <dd class="col-sm-9">@Model.Fecha.ToString("dd/MM/yyyy HH:mm")</dd>
+
+    <dt class="col-sm-3">Lugar</dt>
+    <dd class="col-sm-9">@Model.Lugar</dd>
+
+    <dt class="col-sm-3">Categoría</dt>
+    <dd class="col-sm-9">@Model.Categoria?.Nombre</dd>
+
+    <dt class="col-sm-3">Modalidad</dt>
+    <dd class="col-sm-9">@Model.Modalidad</dd>
+
+    <dt class="col-sm-3">Aforo</dt>
+    <dd class="col-sm-9">@Model.Aforo</dd>
+
+    <dt class="col-sm-3">Precio</dt>
+    <dd class="col-sm-9">@Model.Precio.ToString("C")</dd>
+
+    <dt class="col-sm-3">Inscritos confirmados</dt>
+    <dd class="col-sm-9">@ViewBag.Inscritos</dd>
+
+    <dt class="col-sm-3">Cupos disponibles</dt>
+    <dd class="col-sm-9">@(Model.Aforo - (int)ViewBag.Inscritos)</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.Id"
+   class="btn btn-primary">Editar</a>
+
+<a asp-action="Index" class="btn btn-secondary">Volver</a>

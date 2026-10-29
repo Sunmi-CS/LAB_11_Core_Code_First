@@ -1,0 +1,42 @@
+@model IEnumerable<Eventos.Web.Models.Asistente>
+
+@{
+    ViewData["Title"] = "Asistentes";
+}
+
+<h1>Asistentes</h1>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Mensaje"]
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Registrar asistente
+    </a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombres</th>
+            <th>DNI</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var asistente in Model)
+    {
+        <tr>
+            <td>@asistente.Nombres</td>
+            <td>@asistente.Dni</td>
+            <td>@asistente.Correo</td>
+            <td>@(asistente.Telefono ?? "No registrado")</td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,85 @@
+@model IEnumerable<Eventos.Web.Models.Evento>
+
+@{
+    ViewData["Title"] = "Eventos";
+    var inscritos = ViewBag.Inscritos as Dictionary<int, int>
+                    ?? new Dictionary<int, int>();
+}
+
+<h1>Eventos</h1>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Mensaje"]
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Registrar evento
+    </a>
+</p>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <label for="categoriaId">Filtrar por categoría</label>
+
+    <select id="categoriaId" name="categoriaId"
+            asp-items="ViewBag.Categorias"
+            class="form-select">
+        <option value="">Todas las categorías</option>
+    </select>
+
+    <button type="submit" class="btn btn-secondary mt-2">
+        Filtrar
+    </button>
+
+    <a asp-action="Index" class="btn btn-outline-secondary mt-2">
+        Limpiar
+    </a>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Fecha</th>
+            <th>Lugar</th>
+            <th>Categoría</th>
+            <th>Modalidad</th>
+            <th>Precio</th>
+            <th>Inscritos</th>
+            <th>Cupos disponibles</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var evento in Model)
+    {
+        var cantidad = inscritos.GetValueOrDefault(evento.Id);
+        var cupos = evento.Aforo - cantidad;
+
+        <tr>
+            <td>@evento.Titulo</td>
+            <td>@evento.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+            <td>@evento.Lugar</td>
+            <td>@evento.Categoria?.Nombre</td>
+            <td>@evento.Modalidad</td>
+            <td>@evento.Precio.ToString("C")</td>
+            <td>@cantidad</td>
+            <td>@cupos</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@evento.Id">
+                    Detalles
+                </a> |
+                <a asp-action="Edit" asp-route-id="@evento.Id">
+                    Editar
+                </a> |
+                <a asp-action="Delete" asp-route-id="@evento.Id">
+                    Desactivar
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

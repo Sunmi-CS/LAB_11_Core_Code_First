@@ -1,0 +1,63 @@
+@model IEnumerable<Eventos.Web.Models.Inscripcion>
+
+@{
+    ViewData["Title"] = "Inscripciones";
+}
+
+<h1>Inscripciones</h1>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Mensaje"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Registrar inscripción
+    </a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Evento</th>
+            <th>Asistente</th>
+            <th>Fecha de inscripción</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var inscripcion in Model)
+    {
+        <tr>
+            <td>@inscripcion.Evento?.Titulo</td>
+            <td>@inscripcion.Asistente?.Nombres</td>
+            <td>@inscripcion.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")</td>
+            <td>@inscripcion.Estado</td>
+            <td>
+                @if (inscripcion.Estado == "Confirmada")
+                {
+                    <form asp-action="Cancelar"
+                          asp-route-id="@inscripcion.Id"
+                          method="post">
+                        <button type="submit"
+                                class="btn btn-danger btn-sm">
+                            Cancelar
+                        </button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

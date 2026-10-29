@@ -1,0 +1,21 @@
+@model Eventos.Web.Models.Evento
+
+@{
+    ViewData["Title"] = "Desactivar evento";
+}
+
+<h1>Desactivar evento</h1>
+
+<p>
+    ¿Deseas desactivar el evento <strong>@Model.Titulo</strong>?
+</p>
+
+<p>El registro se conservará en la base de datos.</p>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">
+        Confirmar desactivación
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
