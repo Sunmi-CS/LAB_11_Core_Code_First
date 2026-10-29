@@ -1,0 +1,17 @@
+
+# Compilación de .NET
+bin/
+obj/
+
+# Configuración local y datos sensibles
+appsettings.Development.json
+.env
+.env.*
+
+# Archivos de Visual Studio y VS Code
+.vs/
+*.user
+*.suo
+
+# Archivos temporales
+*.log
